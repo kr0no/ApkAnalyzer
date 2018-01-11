@@ -1,5 +1,5 @@
 # Discontinued
-Y sin soporte.
+Y sin soporte. Programado de pena.
 Echadle un vistazo a [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF), mucho más completo y útil.
 
 ## ApkAnalyzer
