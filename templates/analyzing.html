@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<title>Apk Analyzer</title>
+
+		<!-- Bootstrap -->
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/bootstrap.css') }}">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/style.css') }}">
+		<meta http-equiv="refresh" content="10">
+	</head>
+	
+	<body>
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="/">ApkAnalyzer</a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+						<li class="active"><a href="/">Home</a></li>
+						<li><a href="/reports">Reports</a></li>
+					</ul>
+					<form class="navbar-form navbar-right" action="/search" method="POST">
+						<div class="form-group">
+							<input type="text" placeholder="Search" class="form-control" name="search">
+						</div>
+						<button type="submit" class="btn btn-success">Search</button>
+					</form>
+				</div>
+			</div>
+		</nav>
+		
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<h1 style="text-align:center;">Analyzing APK</h1>
+					<p id="spinner"></p>
+				</div>
+			</div>
+		</div>
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<!-- Include all compiled plugins (below), or include individual files as needed -->
+		<script src="{{ url_for('static',filename='js/bootstrap.js') }}"></script>
+		<script src="{{ url_for('static',filename='js/spin.js') }}"></script>
+		<script>var opts = {
+  lines: 13 // The number of lines to draw
+, length: 28 // The length of each line
+, width: 14 // The line thickness
+, radius: 42 // The radius of the inner circle
+, scale: 1 // Scales overall size of the spinner
+, corners: 1 // Corner roundness (0..1)
+, color: '#000' // #rgb or #rrggbb or array of colors
+, opacity: 0.25 // Opacity of the lines
+, rotate: 0 // The rotation offset
+, direction: 1 // 1: clockwise, -1: counterclockwise
+, speed: 1 // Rounds per second
+, trail: 60 // Afterglow percentage
+, fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
+, zIndex: 2e9 // The z-index (defaults to 2000000000)
+, className: 'spinner' // The CSS class to assign to the spinner
+, shadow: false // Whether to render a shadow
+, hwaccel: false // Whether to use hardware acceleration
+, position: 'relative' // Element positioning
+}
+var target = document.getElementById('spinner')
+var spinner = new Spinner(opts).spin(target);
+</script>
+	</body>
+</html>

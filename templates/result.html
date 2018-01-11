@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<title>Apk Analyzer</title>
+
+		<!-- Bootstrap -->
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/bootstrap.css') }}">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/style.css') }}">
+	</head>
+	<body>
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="/">ApkAnalyzer</a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+						<li><a href="/">Home</a></li>
+						<li><a href="/reports">Reports</a></li>
+					</ul>
+					<form class="navbar-form navbar-right">
+						<div class="form-group">
+							<input type="text" placeholder="Search" class="form-control">
+						</div>
+						<button type="submit" class="btn btn-success">Search</button>
+					</form>
+				</div>
+			</div>
+		</nav>
+		
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<h3><span class="glyphicon glyphicon-file" aria-hidden="true"></span> Report</h3>
+					<legend>General APK Information</legend>
+					<div class="table-responsive">
+						<table class="table table-striped">
+							<tr>
+								<td>Analysis Date</td>
+								<td>{{static['date']}} {{static['time']}}</td>
+							</tr>
+							<tr>
+								<td>Package Name</td>
+								<td>{{ static['package_name'] }}</td>
+							</tr>
+							<tr>
+								<td>Risk</td>
+								<td>{{ static['risk']['FuzzyRisk']['VALUE']|round(2, 'floor') }} / 100</td>
+							<tr>
+								<td>App Name</td>
+								<td>{{ static['app_name'] }}</td>
+							</tr>
+							<tr>
+								<td>Version Code</td>
+								<td>{{ static['version_code'] }}</td>
+							</tr>
+							<tr>
+								<td>Version Name</td>
+								<td>{{ static['version_name'] }}</td>
+							</tr>
+							<tr>
+								<td>Min SDK</td>
+								<td>{{ static['min_sdk_version'] }}</td>
+							</tr>
+							<tr>
+								<td>Target SDK</td>
+								<td>{{ static['target_sdk_version'] }}</td>
+							</tr>
+							<tr>
+								<td>Max SDK</td>
+								<td>{{ static['max_sdk_version'] }}</td>
+							</tr>
+							<tr>
+								<td>Main Activity</td>
+								<td>{{ static['main_activity'] }}</td>
+							</tr>
+							<tr>
+								<td>MD5</td>
+								<td>{{ dynamic['hashes'][0] }}</td>
+							</tr>
+							<tr>
+								<td>SHA1</td>
+								<td>{{ dynamic['hashes'][1] }}</td>
+							</tr>
+							<tr>
+								<td>SHA256</td>
+								<td>{{ dynamic['hashes'][2] }}</td>
+							</tr>
+						</table>
+					</div>
+					<legend>Certificate</legend>
+					<div class="table-responsive">
+						<table class="table table-striped">
+							<tr>
+								<td>Content</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>SHA1</td>
+								<td></td>
+							</tr>
+						</table>
+					</div>
+					<legend>Permisions</legend>
+					<div class="table-responsive">
+						<table class="table table-striped">
+							<tr>
+								<th width="30%">Permission Name</th>
+								<th width="20%">Protection Level</th>
+								<th with="50%">Description</th>
+							<tr>
+						{% for permission in static['permissions'] %}
+							<tr{% if static['permissions'][permission][0] == 'dangerous' %} class="danger"{%endif%}>
+								<td>{{permission}}</td>
+								<td>{{ static['permissions'][permission][0]}}</td>
+								<td>{{static['permissions'][permission][2]}}</td>
+							</tr>
+						{%endfor%}
+						</table>
+					</div>
+					<legend>Activities</legend>
+					<div class="table-responsive">
+						<table class="table table-striped">
+						{% for activity in static['activities'] %}
+							<tr>
+								<td>{{activity}}
+								{%if static['activities'][activity] %}
+								<ul>
+									{% if static['activities'][activity]['action'] %}
+									<li><em>intent-filter <strong>action</strong>:</em> {{static['activities'][activity]['action'][0]}}</li>
+									{%endif%}
+									{% if static['activities'][activity]['category'] %}
+									<li><em>intent-filter <strong>category</strong>:</em> {{static['activities'][activity]['category'][0]}}</li>
+									{%endif%}
+								</ul>
+								{%endif%}
+								</td>
+							</tr>
+						{%endfor%}
+						</table>
+					</div>
+					<legend>Services</legend>
+					<div class="table-responsive">
+						<table class="table table-striped">
+						{% for service in static['services'] %}
+							<tr>
+								<td>{{service}}</td>
+							</tr>
+						{%endfor%}
+						</table>
+					</div>
+					<legend>Broadcast Receivers</legend>
+					<div class="table-responsive">
+						<table class="table table-striped">
+						{% for receiver in static['receivers'] %}
+							<tr>
+								<td>{{receiver}}</td>
+							</tr>
+						{%endfor%}
+						</table>
+					</div>
+					<legend>Content Providers</legend>
+					<div class="table-responsive">
+						<table class="table table-striped">
+						{% for provider in static['providers'] %}
+							<tr>
+								<td>{{provider}}</td>
+							</tr>
+						{%endfor%}
+						</table>
+					</div>
+					<legend>File Operations</legend>
+					<div class="table-responsive">
+						<table class="table table-striped">
+							<tr>
+								<th width="10%">Operation</th>
+								<th width="30%">File path</th>
+								<th width="60%">Data</th>
+							</tr>
+							{% for file in dynamic['fdaccess'] %}
+							{% if not '/proc/' in dynamic['fdaccess'][file]['path'] %}
+							{% if not 'pipe:' in dynamic['fdaccess'][file]['path'] %}
+								<tr>
+									<td>{{dynamic['fdaccess'][file]['operation']}}</td>
+									<td>{{dynamic['fdaccess'][file]['path']}}</td>
+									<td>{{dynamic['fdaccess'][file]['data'].decode("hex")}}</td>
+								</tr>
+							{%endif%}
+							{%endif%}
+							{%endfor%}
+						</table>
+					</div>
+					<legend>Network Connections</legend>
+					<div class="table-responsive">
+						<table class="table table-striped">
+							<tr>
+								<th width="40%">Host</th>
+								<th width="40%">Port</th>
+								<th width="20%">FD</th>
+							</tr>
+							{% for file in dynamic['opennet'] %}
+							<tr>
+								<td><img src="{{url_for('static',filename='images/flags/'+geoIP.country_code_by_addr(dynamic['opennet'][file]['desthost']).lower()+'.png')}}" alt="{{geoIP.country_code_by_addr(dynamic['opennet'][file]['desthost'])}}"> {{dynamic['opennet'][file]['desthost']}}</td>
+								<td>{{dynamic['opennet'][file]['destport']}}</td>
+								<td>{{dynamic['opennet'][file]['fd']}}</td>
+							</tr>
+							{%endfor%}
+						</table>
+					</div>
+					<legend>Cryto Operations</legend>
+					<div class="table-responsive">
+						<table class="table table-striped">
+							<tr>
+								<th>Operation</th>
+								<th>Algorithm</th>
+								<th>Data/Key</th>
+							</tr>
+							{% for file in dynamic['cryptousage'] %}
+							<tr>
+								<td>{% if dynamic['cryptousage'][file]['operation'] == 'keyalgo' %}key{%else%}{{dynamic['cryptousage'][file]['operation']}}{%endif%}</td>
+								<td>{{dynamic['cryptousage'][file]['algorithm']}}</td>
+								<td>{% if dynamic['cryptousage'][file]['operation'] == 'keyalgo' %}{{dynamic['cryptousage'][file]['key']}}{%else%}{{dynamic['cryptousage'][file]['data']}}{%endif%}</td>
+								
+							</tr>
+							{%endfor%}
+						</table>
+					</div>
+					<legend>Permission Usage</legend>
+					{% for data in static['permissions_usage'] %}
+					<h4>{{ static['permissions_usage'][data]['permission'] }}</h4>
+						<table class="table table-striped" width="100%">
+							<tr>
+								<th width="40%">Source</th>
+								<th width="40%">Destination</th>
+								<th width="20%">Path Index</th>
+							</tr>
+							{% for path in static['permissions_usage'][data]['path'] %}			
+							<tr>
+								<td>{{path['src']}}</td>
+								<td>{{path['dst']}}</td>
+								<td>{{path['idx']}}</td>
+							</tr>
+							{%endfor%}
+						</table>
+					{%endfor%}
+					<legend>Network Data Send</legend>
+					<div class="table-responsive">
+						<table class="table table-striped">
+							<tr>
+								<th>Host</th>
+								<th>Port</th>
+								<th>Data</th>
+							</tr>
+							{% for file in dynamic['sendnet'] %}
+								<tr>
+									<td><img src="{{url_for('static',filename='images/flags/'+geoIP.country_code_by_addr(dynamic['sendnet'][file]['desthost']).lower()+'.png')}}" alt="{{geoIP.country_code_by_addr(dynamic['sendnet'][file]['desthost'])}}"> {{dynamic['sendnet'][file]['desthost']}}</td>
+									<td>{{dynamic['sendnet'][file]['destport']}}</td>
+									<td>{{dynamic['sendnet'][file]['data'].decode("hex")}}</td>
+								</tr>
+							{%endfor%}
+						</table>
+					</div>
+					<legend>Network Data Received</legend>
+					<div class="table-responsive">
+						<table class="table table-striped">
+							<tr>
+								<th>Host</th>
+								<th>Port</th>
+								<th>Data</th>
+							</tr>
+							{% for file in dynamic['recvnet'] %}
+								<tr>
+									<td><img src="{{url_for('static',filename='images/flags/'+geoIP.country_code_by_addr(dynamic['recvnet'][file]['host']).lower()+'.png')}}" alt="{{geoIP.country_code_by_addr(dynamic['recvnet'][file]['host'])}}"> {{dynamic['recvnet'][file]['host']}}</td>
+									<td>{{dynamic['recvnet'][file]['port']}}</td>
+									<td>{{dynamic['recvnet'][file]['data'].decode("hex")}}</td>
+								</tr>
+							{%endfor%}
+						</table>
+					</div>
+					<legend>Services Started</legend>
+					<div class="table-responsive">
+						<table class="table table-striped">
+							{% for file in dynamic['servicestart'] %}
+							<tr>
+								<td>{{dynamic['servicestart'][file]['name']}}</td>
+							</tr>
+							{%endfor%}
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
