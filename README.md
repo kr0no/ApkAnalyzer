@@ -1,7 +1,7 @@
 # Discontinued
-Y sin soporte. Programado de pena.
+Y sin soporte.
 
-Echadle un vistazo a [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF), mucho más completo y útil.
+Echadle un vistazo a [MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF), mucho más completo.
 
 ## ApkAnalyzer
 Análisis de un APK para mostrar indicadores de malware
